@@ -9,10 +9,12 @@ import org.springframework.web.bind.annotation.*;
 @Controller
 class UserController {
     @Autowired
-    private UserService svc;
+    private
+    UserService svc;
 
     @Autowired
-    private CurrentUserService currentSvc;
+    private
+    CurrentUserService currentSvc;
 
     @GetMapping(value = "/api/currentuser", produces = "application/json")
     public @ResponseBody
