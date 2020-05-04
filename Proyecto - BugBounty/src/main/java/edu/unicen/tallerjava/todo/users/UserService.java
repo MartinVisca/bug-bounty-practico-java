@@ -33,13 +33,18 @@ public class UserService {
         for (User user : repo.findAll()) {
             result.add(user);
         }
-        result.sort(Comparator.comparing(User::getId));
+        result.sort(Comparator.comparing(User::getName));
         return result;
     }
 
     public User addUser(User user) {
-        logSvc.addLog("Se agregó el usuario " + user.getName(), user);
-        return this.repo.save(user);
+        if(user == null){
+            return null;
+        }
+        else{
+            logSvc.addLog("Se agregó el usuario " + user.getName(), user);
+            return this.repo.save(user);
+        }
     }
 
     public void clearUsers() {
@@ -57,7 +62,7 @@ public class UserService {
     public User login(String name) {
         User last = repo.findFirstByOrderByIdDesc().orElse(null);
         int lastId = last == null ? 0 : last.getId();
-        lastId = lastId++;
+        lastId++;
         User user = new User(name, lastId);
         currentSvc.setCurrent(user);
         return addUser(user);
