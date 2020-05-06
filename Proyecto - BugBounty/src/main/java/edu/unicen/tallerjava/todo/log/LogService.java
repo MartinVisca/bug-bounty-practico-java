@@ -15,7 +15,7 @@ import edu.unicen.tallerjava.todo.users.User;
  */
 @Service
 public class LogService {
-	private final HashMap<User, List<Log>> logs = new HashMap<>();
+	private final HashMap<String, List<Log>> logs = new HashMap<>();
 
 	public List<Log> getLogs() {
 		return logs.values().stream().flatMap(list -> list.stream()).collect(Collectors.toList());
@@ -29,13 +29,13 @@ public class LogService {
 	 */
 	public synchronized void addLog(String action, User user) {
 		Log log = new Log(UUID.randomUUID(), action, user);
-		List<Log> list = logs.get(user);
+		List<Log> list = logs.get(user.getName());
 		if (list == null) {
 			list = new ArrayList<>();
-			logs.put(user, list);
+			logs.put(user.getName(), list);
 		}
 		list.add(log);
-		list.add(log);
+		logs.put(user.getName(), list);
 	}
 
 	/**
@@ -46,6 +46,6 @@ public class LogService {
 	}
 
 	public List<Log> getUserLogs(User user) {
-		return this.logs.get(user);
+		return this.logs.get(user.getName());
 	}
 }
